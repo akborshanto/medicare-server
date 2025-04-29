@@ -1,21 +1,23 @@
-import express, { Request, Response } from 'express'
+import express, { Request, Response } from "express";
+import cors from "cors"; // CORS মডিউল ইনস্টল করো
+import authRouter from './modules/auth/auth.routes';
 
+const app = express();
 
-const app = express()
+// CORS middleware ব্যবহার করা
+app.use(cors({
+  origin: "http://localhost:3000",  // এখানে তোমার frontend URL দিতে হবে
+  credentials: true, // যদি cookies বা token পাঠাও
+}));
 
-// middleware
-app.use(express.json())
+// parsers
+app.use(express.json());
 
-// app.use('/api/user', userRouter)
-// app.use('/api/tour', tourRouter)
+// Routes
+app.use("/api/auth", authRouter);
 
-// POST: /api/user/create-user
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello World!");
+});
 
-app.get('/', (req: Request, res: Response) => {
-  res.send({
-    status: true,
-    message: 'Server Live ⚡',
-  })
-})
-
-export default app
+export default app;
